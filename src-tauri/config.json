@@ -1,0 +1,93 @@
+{
+  "activeMainVariant": 0,
+  "mainVariants": [
+    {
+      "activeSubVariant": 9,
+      "title": "Main",
+      "id": 0,
+      "main": {
+        "title": "variant9",
+        "id": 9,
+        "rate": 18,
+        "sensitivity": 3,
+        "times": 10
+      },
+      "click": {
+        "times": 3,
+        "rate": 110
+      },
+      "subVariants": [
+        {
+          "title": "variant0",
+          "id": 0,
+          "rate": 15,
+          "sensitivity": 8,
+          "times": 10
+        },
+        {
+          "title": "variant1",
+          "id": 1,
+          "rate": 20,
+          "sensitivity": 9,
+          "times": 10
+        },
+        {
+          "title": "variant2",
+          "id": 2,
+          "rate": 35,
+          "sensitivity": 1,
+          "times": 1
+        },
+        {
+          "title": "variant3",
+          "id": 3,
+          "rate": 13,
+          "sensitivity": 2,
+          "times": 10
+        },
+        {
+          "title": "variant4",
+          "id": 4,
+          "rate": 13,
+          "sensitivity": 3,
+          "times": 10
+        },
+        {
+          "title": "variant5",
+          "id": 5,
+          "rate": 12,
+          "sensitivity": 4,
+          "times": 11
+        },
+        {
+          "title": "variant6",
+          "id": 6,
+          "rate": 10,
+          "sensitivity": 5,
+          "times": 10
+        },
+        {
+          "title": "variant7",
+          "id": 7,
+          "rate": 15,
+          "sensitivity": 8,
+          "times": 10
+        },
+        {
+          "title": "variant8",
+          "id": 8,
+          "rate": 14,
+          "sensitivity": 4,
+          "times": 10
+        },
+        {
+          "title": "variant9",
+          "id": 9,
+          "rate": 18,
+          "sensitivity": 3,
+          "times": 10
+        }
+      ]
+    }
+  ]
+}

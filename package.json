@@ -1,0 +1,23 @@
+{
+  "name": "MouseMacros",
+  "private": true,
+  "version": "0.1.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.3",
+    "vue": "3.4.19"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.9",
+    "@vitejs/plugin-vue": "5.0.4",
+    "vite": "^5.1.1",
+    "typescript": "^5.3.3",
+    "sass": "^1.70.0"
+  }
+}
