@@ -4,6 +4,7 @@ import { IConfig } from "../types/tray";
 import { getDefaultSubVariant } from "../app";
 
 export const trayWebviewConfig: WindowOptions = {
+  title: "Tray MouseMacros",
   url: "./tray.html",
   height: 0,
   width: 0,
