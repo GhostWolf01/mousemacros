@@ -79,7 +79,7 @@ async function main() {
 
   unlistens.push(
     await bindKey("Subtract", () => {
-      if (config.mainConfig.main.value.sensitivity - 1 > 1) {
+      if (config.mainConfig.main.value.sensitivity - 1 > 0) {
         config.mainConfig.main.value.sensitivity--;
         config.autoSaveSubVariantConfig();
       }
