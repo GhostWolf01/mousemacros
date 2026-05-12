@@ -56,7 +56,7 @@ function addBindKey(nameKey: string, callback: EventCallback<null>) {
     switch (key) {
       case KeybdKey.Backquote: {
         return (event: KeyboardEvent) =>
-          event.key === "`" || event.key === "'" || event.key === "ё";
+          event.key === "`" || event.key === "'" || event.key.toLocaleLowerCase() === "ё";
       }
       case KeybdKey.Add: {
         return (event: KeyboardEvent) => event.key === "+";
@@ -104,7 +104,7 @@ function addBindKey(nameKey: string, callback: EventCallback<null>) {
         return (event: KeyboardEvent) => event.key === "9";
       }
       default: {
-        return (event: KeyboardEvent) => event.key === key;
+        return (event: KeyboardEvent) => event.key.toLocaleLowerCase() === key.toLocaleLowerCase();
       }
     }
   }
