@@ -35,7 +35,8 @@
         "renameFile": false,
         "exists": false,
         "scope": [
-          "$RESOURCE/config.json"
+          "$RESOURCE/config.json",
+          "$RESOURCE/logs.log"
         ]
       },
       "dialog": {

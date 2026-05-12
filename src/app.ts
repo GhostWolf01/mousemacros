@@ -61,7 +61,7 @@ export const config: IConfig = {
 
   async parseConfig() {
     try {
-      const file = await readTextFile("config.json", { dir: BaseDirectory.Resource }); //
+      const file = await readTextFile("config.json", { dir: BaseDirectory.Resource });
       if (file) {
         const configFile = JSON.parse(file) as IConfigFile;
         const activeMainVariant =
@@ -75,11 +75,12 @@ export const config: IConfig = {
       }
     } catch (error) {
       console.error(error);
+      await saveLogs(`Failed to open configuration: ${error}`);
       message("Configuration is not open!", { title: "Tauri", type: "error" });
     }
   },
 
-  async saveConfig() {
+  async saveConfig(showMessage = true ) {
     try {
       const configFile: IConfigFile = {
         activeMainVariant: this.mainConfig.activeMainVariant.value,
@@ -89,8 +90,12 @@ export const config: IConfig = {
       await writeTextFile("config.json", JSON.stringify(configFile), {
         dir: BaseDirectory.Resource,
       });
+      if (showMessage) {
+        message("Configuration saved successfully", { title: "Tauri", type: "info" });
+      }
     } catch (error) {
       console.error(error);
+      await saveLogs(`Failed to save config: ${error}`);
       message("Configuration is not saved!", { title: "Tauri", type: "error" });
     }
   },
@@ -101,7 +106,10 @@ export const config: IConfig = {
     );
     if (mainVariant) {
       mainVariant.click = { ...this.mainConfig.click.value };
-    } else message("Auto Save Click is not saved!", { title: "Tauri", type: "error" });
+    } else {
+      message("Auto Save Click is not saved!", { title: "Tauri", type: "error" });
+      saveLogs(`Auto Save Click is not saved! mainVariant not found with id: ${this.mainConfig.activeMainVariant.value}`);
+    }
   },
 
   autoSaveSubVariantConfig() {
@@ -109,6 +117,8 @@ export const config: IConfig = {
       (item) => item.id === this.mainConfig.activeMainVariant.value
     );
     if (mainVariant) {
+      mainVariant.main = { ...this.mainConfig.main.value };
+
       const subVariant = mainVariant.subVariants.find(
         (item) => item.id === this.mainConfig.activeSubVariant.value
       );
@@ -116,9 +126,14 @@ export const config: IConfig = {
         subVariant.rate = this.mainConfig.main.value.rate;
         subVariant.sensitivity = this.mainConfig.main.value.sensitivity;
         subVariant.times = this.mainConfig.main.value.times;
-      } else
+      } else {
         message("Auto Save Sub VariantConfig is not saved!", { title: "Tauri", type: "error" });
-    } else message("Auto Save Sub VariantConfig is not saved!", { title: "Tauri", type: "error" });
+        saveLogs(`Auto Save Sub VariantConfig is not saved! subVariant not found with id: ${this.mainConfig.activeSubVariant.value}`);
+      }
+    } else {
+      message("Auto Save Sub VariantConfig is not saved!", { title: "Tauri", type: "error" });
+      saveLogs(`Auto Save Sub VariantConfig is not saved! mainVariant not found with id: ${this.mainConfig.activeMainVariant.value}`);
+    }
   },
 
   addMainVariantConfig(title) {
@@ -132,7 +147,10 @@ export const config: IConfig = {
       this.mainConfig.activeSubVariant.value = mainVariant.activeSubVariant;
       this.mainConfig.main.value = { ...mainVariant.main };
       this.mainConfig.click.value = { ...mainVariant.click };
-    } else message("Configuration is not change!", { title: "Tauri", type: "error" });
+    } else {
+      message("Configuration is not change!", { title: "Tauri", type: "error" });
+      saveLogs(`Configuration is not change! mainVariant not found with id: ${mainVariantId}`);
+    }
   },
 
   safeSubVariantConfig(subVariantId) {
@@ -146,8 +164,14 @@ export const config: IConfig = {
         subVariant.rate = this.mainConfig.main.value.rate;
         subVariant.sensitivity = this.mainConfig.main.value.sensitivity;
         subVariant.times = this.mainConfig.main.value.times;
-      } else message("Configuration is not saved!", { title: "Tauri", type: "error" });
-    } else message("Configuration is not saved!", { title: "Tauri", type: "error" });
+      } else {
+        message("Configuration is not saved!", { title: "Tauri", type: "error" });
+        saveLogs(`Configuration is not saved! subVariant not found with id: ${subVariantId}`);
+      }
+    } else {
+      message("Configuration is not saved!", { title: "Tauri", type: "error" });
+      saveLogs(`Configuration is not saved! mainVariant not found with id: ${this.mainConfig.activeMainVariant.value}`);
+    }
     // console.log(`safeVariantConfig variant${variant}`);
   },
 
@@ -163,17 +187,20 @@ export const config: IConfig = {
         mainVariant.main = { ...subVariant };
         this.mainConfig.activeSubVariant.value = subVariant.id;
         this.mainConfig.main.value = { ...subVariant };
-      } else
+      } else {
         message(`Configuration sub variant ${subVariantId} is not active!`, {
           title: "Tauri",
           type: "error",
         });
+        saveLogs(`Configuration sub variant ${subVariantId} is not active! subVariant not found with id: ${subVariantId}`);
+      }
       // console.log(`activeVariantConfig variant${variant}`);
     } else {
       message(`Configuration sub variant ${subVariantId} is not active!`, {
         title: "Tauri",
         type: "error",
       });
+      saveLogs(`Configuration sub variant ${subVariantId} is not active! mainVariant not found with id: ${this.mainConfig.activeMainVariant.value}`);
     }
   },
 };
@@ -190,4 +217,14 @@ export function changeConfig(trayWebview: WebviewWindow) {
     },
   };
   trayWebview.emit("changeConfig", trayConfig);
+}
+
+export async function saveLogs(log: string) {
+  const date = new Date();
+  const logWithDate = `[${date.toLocaleString()}] ${log}\n`;
+
+  await writeTextFile("logs.log", logWithDate, {
+    dir: BaseDirectory.Resource,
+    append: true,
+  });
 }

@@ -24,7 +24,7 @@ export interface IConfig {
   mainConfig: IMainConfig;
   variantsConfig: IMainVariantConfig[];
   parseConfig: () => Promise<void>;
-  saveConfig: () => Promise<void>;
+  saveConfig: (showMessage?: boolean) => Promise<void>;
   addMainVariantConfig: (title: string) => void;
   activeMainVariantConfig: (mainVariantId: number) => void;
   safeSubVariantConfig: (subVariantId: number) => void;

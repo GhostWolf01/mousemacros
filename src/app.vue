@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { config, changeConfig } from "./app";
+import { config, changeConfig, saveLogs } from "./app";
 import { bindKey, mouseMove, mouseClick, bindHoldKey, activeBindKeys } from "./bindKeys";
 import Input from "./components/Input.vue";
 import Select, { ISelectItem } from "./components/Select.vue";
@@ -16,8 +16,10 @@ const trayWebview = new WebviewWindow("trayWebview", trayWebviewConfig);
 
 appWindow.onCloseRequested(async () => {
   try {
-    await config.saveConfig();
-  } catch (error) {}
+    await config.saveConfig(false);
+  } catch (error) {
+    saveLogs("Failed to save config: " + error);
+  }
 
   await trayWebview.close();
 });
